@@ -1,0 +1,21 @@
+body{
+    text-align: center;
+}
+
+#wrapper{
+    background-color: burlywood;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#container{
+    background-color: burlywood;
+    position: absolute;
+    width: 600px;
+    height: 200px;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%,-50%);
+}
