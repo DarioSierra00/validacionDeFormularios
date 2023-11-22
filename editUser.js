@@ -5,6 +5,7 @@ const areaTlf = document.getElementById('codArea')
 const telefono = document.getElementById('telefono')
 const form = document.querySelector('form')
 const url = "http://localhost:3000/users";
+const id = window.location.search.substring(4);
 
 const annioActual = new Date().getFullYear();
 
@@ -131,25 +132,36 @@ const checkDateOfBirth = () =>{
     return valid;
 }
 
-async function addUserApi(user){
-    const response = await fetch(url+"?dni="+user.dni1)
+async function getUserApi(id){
+    const response = await fetch(url+"?id="+id);
     const data = await response.json();
 
+    return data;
 
-    if(data.length == 0){
-        const response = await fetch(url, {
-            method : 'POST',
-            body : JSON.stringify(user),
-            headers : {
-                "Content-type" : "application/json"
-            }
-        })
-        if(response.ok){
-            console.log('ok')
+    
+}
+
+const cargarUser = async () =>{
+    const usuario = await getUserApi(id)
+    username.value = usuario[0].user;
+    dateOfBirth.value = usuario[0].date;
+    dni.value = usuario[0].dni1;
+    areaTlf.value = usuario[0].aTlf;
+    telefono.value = usuario[0].telefono1;
+}
+
+cargarUser()
+
+async function editUser(user){
+    const response = await fetch(url + "/"+ id, {
+        method : 'PUT',
+        body : JSON.stringify(user),
+        headers : {
+            "Content-type" : "application/json"
         }
-    }
-    else{
-        alert('Ya existe un usuario con ese dni')
+    })
+    if(response.ok){
+        console.log('ok')
     }
 }
 
@@ -169,6 +181,6 @@ form.addEventListener('submit', function(event){
         let telefono1 = telefono.value;
 
         let newUser = {user,date,dni1,aTlf,telefono1}
-        addUserApi(newUser);
+        editUser(newUser);
     }
 })
